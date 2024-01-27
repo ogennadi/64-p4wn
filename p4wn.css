@@ -34,6 +34,7 @@
 
 .p4wn-controls{
   clear: both;
+  max-width: 300px;
   /*border:1px solid green;*/
 }
 
