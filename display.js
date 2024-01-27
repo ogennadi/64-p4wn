@@ -52,6 +52,9 @@ var P4WN_PROMOTION_INTS = [P4_QUEEN, P4_ROOK, P4_KNIGHT, P4_BISHOP];
 
 var _p4d_proto = {};
 
+////
+var history_for_lichess = [];
+////
 
 /* MSIE 6 compatibility functions */
 function _add_event_listener(el, eventname, fn){
@@ -162,6 +165,16 @@ _p4d_proto.display_move_text = function(moveno, string){
                      p4d.goto_move(n);
                  };
              }(this, moveno));
+
+    //// @todo: maybe move this to the calling function, this.move()
+    history_for_lichess.push(string);
+    var LICHESS_ANALYSIS_URL = 'https://lichess.org/analysis/pgn/';
+
+    for (var i = 0; i < history_for_lichess.length; i++){
+        LICHESS_ANALYSIS_URL += history_for_lichess[i] + '_';
+    }
+    console.log(LICHESS_ANALYSIS_URL);
+    ////
 };
 
 _p4d_proto.log = function(msg, klass, onclick){
@@ -185,6 +198,7 @@ _p4d_proto.goto_move = function(n){
     var div = this.elements.log;
     for (var i = 0; i < delta; i++){
         div.removeChild(div.lastChild);
+        history_for_lichess.pop();
     }
     this.board_state.jump_to_moveno(n);
     this.refresh();
