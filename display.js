@@ -53,7 +53,7 @@ var P4WN_PROMOTION_INTS = [P4_QUEEN, P4_ROOK, P4_KNIGHT, P4_BISHOP];
 var _p4d_proto = {};
 
 ////
-var history_for_lichess = [];
+var P4WN_HISTORY = [];
 ////
 
 /* MSIE 6 compatibility functions */
@@ -98,6 +98,7 @@ _p4d_proto.move = function(start, end, promotion){
     var move_result = state.move(start, end, promotion);
     if(move_result.ok){
         this.display_move_text(state.moveno, move_result.string);
+        P4WN_HISTORY.push(move_result.string);
         this.refresh();
         if (! (move_result.flags & P4_MOVE_FLAG_MATE)){
             this.next_move_timeout = window.setTimeout(
@@ -165,16 +166,6 @@ _p4d_proto.display_move_text = function(moveno, string){
                      p4d.goto_move(n);
                  };
              }(this, moveno));
-
-    //// @todo: maybe move this to the calling function, this.move()
-    history_for_lichess.push(string);
-    var LICHESS_ANALYSIS_URL = 'https://lichess.org/analysis/pgn/';
-
-    for (var i = 0; i < history_for_lichess.length; i++){
-        LICHESS_ANALYSIS_URL += history_for_lichess[i] + '_';
-    }
-    console.log(LICHESS_ANALYSIS_URL);
-    ////
 };
 
 _p4d_proto.log = function(msg, klass, onclick){
@@ -198,7 +189,7 @@ _p4d_proto.goto_move = function(n){
     var div = this.elements.log;
     for (var i = 0; i < delta; i++){
         div.removeChild(div.lastChild);
-        history_for_lichess.pop();
+        P4WN_HISTORY.pop();
     }
     this.board_state.jump_to_moveno(n);
     this.refresh();
@@ -427,6 +418,20 @@ var P4WN_CONTROLS = [
             };
         },
         hidden: true
+    },
+    {
+        label: '<form target="_blank" action="https://lichess.org/api/import" method="POST"><input id="p4pgn" type="hidden" name="pgn" value="ass"><input type="submit" value="Import"></form>',
+        onclick_wrap: function(p4d){
+            return function(e){
+                let params = new URLSearchParams(document.location.search);
+                let start = params.get("start") ?? 'standard';
+                let data = '[Black "p4wn"]\n[White "me"]\n[FEN "'+ start +'"]\n\n';
+                for(var i = 0; i < P4WN_HISTORY.length; i++){
+                    data += P4WN_HISTORY[i] + " ";
+                }
+                document.getElementById("p4pgn").value = data;
+            }
+        }
     }
 ];
 
