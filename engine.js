@@ -111,7 +111,7 @@ var P4_PIECE_LUT = { /*for FEN, PGN interpretation */
 };
 
 var P4_ENCODE_LUT = '  PPRRNNBBKKQQ';
-
+var P4_SEED;
 
 function p4_alphabeta_treeclimber(state, count, colour, score, s, e, alpha, beta){
     var move = p4_make_move(state, s, e, P4_QUEEN);
@@ -1536,6 +1536,7 @@ function p4_find_source_point(state, e, str){
  * http://burtleburtle.net/bob/rand/smallprng.html
  */
 function p4_random_seed(state, seed){
+    P4_SEED = seed;
     seed &= 0xffffffff;
     state.rng = (P4_USE_TYPED_ARRAYS) ? new Uint32Array(4) : [];
     state.rng[0] = 0xf1ea5eed;

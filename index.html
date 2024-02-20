@@ -9,6 +9,8 @@
 <!-- Put anything you like here... -->
 
 <div id="board-goes-here"></div>
+$ <input  id="input" type="text"/>
+<div id="output" />
 
 <!-- ...and here -->
 
@@ -17,6 +19,17 @@
 <script>
 var game = p4wnify("board-goes-here");
 game.next_move();
+
+const input  = document.getElementById("input");
+const output = document.getElementById("output")
+
+input.addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        var result = eval(input.value);
+        output.textContent = result;
+        input.value = "";
+    }
+});
 </script>
 <!-- Uncomment if you like to optimize to screen resolution -->
 <!-- script src="resolutionawareness.js"></script -->
