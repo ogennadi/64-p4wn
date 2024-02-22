@@ -422,10 +422,18 @@ var P4WN_CONTROLS = [
     {
         label: '<form target="_blank" action="https://lichess.org/api/import" method="POST"><input id="p4pgn" type="hidden" name="pgn" value="ass"><input type="submit" value="Import"></form>',
         onclick_wrap: function(p4d){
+            var player_tag= function(player){
+                return player === 'computer' ?
+                    'computer L' + p4d.computer_level + ' S' + P4_SEED :
+                    'human';
+            }
+
             return function(e){
                 let params = new URLSearchParams(document.location.search);
                 let start = params.get("start") ?? 'standard';
-                let data = '[Black "p4wn"]\n[White "me"]\n[FEN "'+ start +'"]\n\n';
+                let black = player_tag(p4d.players[1]);
+                let white = player_tag(p4d.players[0]);
+                let data = '[Black "'+black+'"]\n[White "'+white+'"]\n[FEN "'+ start +'"]\n\n';
                 for(var i = 0; i < P4WN_HISTORY.length; i++){
                     data += P4WN_HISTORY[i] + " ";
                 }
