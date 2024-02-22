@@ -1400,7 +1400,7 @@ function p4_initialise_state(){
         history: [],
         treeclimber: p4_alphabeta_treeclimber
     };
-    p4_random_seed(state, P4_DEBUG ? 1 : Date.now());
+    p4_random_seed(state, P4_DEBUG ? 1 : Date.now() % 100);
     return state;
 }
 
