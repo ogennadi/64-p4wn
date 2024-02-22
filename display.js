@@ -54,7 +54,9 @@ var _p4d_proto = {};
 
 ////
 var P4WN_HISTORY = [];
+var P4WN_START_TIME;
 ////
+
 
 /* MSIE 6 compatibility functions */
 function _add_event_listener(el, eventname, fn){
@@ -115,6 +117,12 @@ _p4d_proto.move = function(start, end, promotion){
     for (var i = 0; i < this.move_listeners.length; i++){
         this.move_listeners[i](move_result);
     }
+
+    if(state.history.length === 1){
+        P4WN_START_TIME = new Date(Date.now());
+        document.getElementById("start-time").textContent = "started at: " + P4WN_START_TIME;
+    }
+
     return move_result.ok;
 };
 
