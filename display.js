@@ -427,6 +427,18 @@ var P4WN_CONTROLS = [
         },
         hidden: true
     },
+    {/* seed */
+        onclick_wrap: function(p4d){
+            return function(e){
+                localStorage.setItem('seed', Date.now() % 100);
+                P4_SEED = parseInt(localStorage.getItem('seed'));
+                p4d.refresh_buttons();
+            };
+        },
+        refresh: function(el){
+            el.innerHTML = 'seed: <b>'+P4_SEED+'</b>';
+        }
+    },
     {
         label: '<form target="_blank" action="https://lichess.org/api/import" method="POST"><input id="p4pgn" type="hidden" name="pgn" value="ass"><input type="submit" value="Import"></form>',
         onclick_wrap: function(p4d){
@@ -511,7 +523,8 @@ _p4d_proto.interpret_query_string = function(){
                 this.maybe_rotate_board();
             }
         },
-        debug: function(s){P4_DEBUG = parseInt(s)}
+        debug: function(s){P4_DEBUG = parseInt(s)},
+        seed: function(s){P4_SEED = parseInt(s)}
     };
     var i;
     var query = parse_query();

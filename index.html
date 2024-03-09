@@ -9,7 +9,6 @@
 <!-- Put anything you like here... -->
 
 <div id="board-goes-here"></div>
-<div id="seed"></div>
 <div id="start-time"></div>
 
 <!-- ...and here -->
@@ -19,8 +18,6 @@
 <script>
 var game = p4wnify("board-goes-here");
 game.next_move();
-
-document.getElementById("seed").textContent = 'seed: ' + P4_SEED;
 </script>
 <!-- Uncomment if you like to optimize to screen resolution -->
 <!-- script src="resolutionawareness.js"></script -->
