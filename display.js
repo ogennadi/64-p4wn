@@ -55,6 +55,7 @@ var _p4d_proto = {};
 ////
 var P4WN_HISTORY = [];
 var P4WN_START_TIME;
+var P4WN_UNDO_COUNT = 0;
 ////
 
 
@@ -365,9 +366,18 @@ var P4WN_CONTROLS = [
         onclick_wrap: function(p4d){
             return function(e){
                 p4d.goto_move(-2);
+                P4WN_UNDO_COUNT++;
+                console.log(P4WN_UNDO_COUNT);
+                p4d.refresh_buttons();
             };
         },
-        label: "<b>undo</i>"
+        refresh: function(el) {
+            if(P4WN_UNDO_COUNT > 0){
+                  el.innerHTML = '<b>undo ('+P4WN_UNDO_COUNT+')</b>';
+            }else{
+                  el.innerHTML = '<b>undo</b>';
+            }
+        }
     },
     {/* pawn promotion*/
         onclick_wrap: function(p4d){
